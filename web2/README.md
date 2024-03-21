@@ -2,7 +2,7 @@
 Декомпилим исходники сайта через Luyten, потому что исходники на джаве(.jar):\
 ![java.png](java.png "а вот и исходники")
 Видим упоминание springframework, в том числе в MANIFEST.MF, это ам понадобится. В HelloController.class описана основная логика приложения, внимательно читаем его и понимаем, что чтобы получить флаг, нам нужно узнать/записать пароль в password.txt:\
-![password.png](password.png "интересненько...")
+![password.png](password.png "интересненько...") \
 Видим ещё /doc/{document}, который скорее всего можно проэксплатировать. Ищем в яндексе "springframework Path Variable exploit" и натыкаемся на замечательный сайт:\
 https://www.veracode.com/blog/secure-development/spring-view-manipulation-vulnerability \
 На нём находим эксплоит для /doc: \
